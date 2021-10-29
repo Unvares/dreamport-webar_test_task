@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body>
+    <a-scene >
+      <a-assets>
+        <video id="mainVideo" src="тикток_девушка.mp4"></video>
+      </a-assets>
+
+      <a-marker preset='hiro'>
+        <a-video id="video"   width="9" height="16" onclick="play('alpha')" rotation="-90 0 0" src="#mainVideo"></a-video>
+      </a-marker>
+    </a-scene>
+  </body>
+  
+  <script>
+    const aVideoAsset = document.querySelector('#mainVideo');
+    let flag = true
+    window.onclick = function(){
+      if (flag) {
+        aVideoAsset.play()
+        flag = false
+        return
+      }
+      aVideoAsset.pause()
+      flag = true
+    }
+    
+ 
+  </script>
+</html> 
