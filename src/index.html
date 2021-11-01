@@ -1,34 +1,52 @@
 <!DOCTYPE html>
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"> </script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   </head>
-  <body>
-    <a-scene >
-      <a-assets>
-        <video id="mainVideo" src="тикток_девушка.mp4"></video>
-      </a-assets>
-
-      <a-marker preset='hiro'>
-        <a-video id="video"   width="9" height="16" onclick="play('alpha')" rotation="-90 0 0" src="#mainVideo"></a-video>
-      </a-marker>
-    </a-scene>
-  </body>
-  
   <script>
-    const aVideoAsset = document.querySelector('#mainVideo');
-    let flag = true
-    window.onclick = function(){
-      if (flag) {
-        aVideoAsset.play()
-        flag = false
-        return
-      }
-      aVideoAsset.pause()
-      flag = true
-    }
-    
- 
+    AFRAME.registerComponent("sphereexpand", {
+      init: function () {
+        let flag = true
+        let aVideoAssets = document.querySelector("#mainVideo")
+        const loader = () => {
+          if (flag) {
+            aVideoAssets.play()
+            flag = false
+          } else {
+            aVideoAssets.pause()
+            flag  = true
+          }
+        }
+        this.el.addEventListener("click", loader);
+        // this.el.addEventListener("markerFound", () => {
+        //   videoPlayer.play()
+        // })
+        this.el.addEventListener("markerLost", () => {
+          aVideoAssets.pause()
+          flag = true
+        })
+    }});
   </script>
-</html> 
+  <body>
+     <a-scene >
+
+      <a-assets>
+        <video  id="mainVideo" loop="true" src="тикток_девушка.mp4"></video>
+      </a-assets>
+             
+      <a-entity id="camera" position="0 1.6 0" camera look-controls>
+        <a-entity cursor="rayOrigin: mouse"></a-entity>
+      </a-entity>
+          
+      <a-marker sphereexpand type="pattern" url="pattern-marker.patt">
+        <a-plane
+          position="0 2 0"
+          width="1.8" height="3.2"
+          rotation="-90 0 0"
+          material="transparent:true; src: #mainVideo">
+        </a-plane>
+      </a-marker>
+       
+     </a-scene>
+  </body>
+</html>
