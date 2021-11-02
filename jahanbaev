@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>test aplication</title>
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+<script src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js'></script>
+<script>
+
+var swt = false;
+ var elem;
+ var ps = 1;
+function arst(){
+  if(ps == 1){
+      if(swt == true){
+          document.getElementById("control").innerText = "stop";
+    elem.play();
+    ps=0;
+}  }else{
+    document.getElementById("control").innerText = "start";
+ps=1;
+elem.pause();
+elem.currentTime = 0;
+    }
+    }
+    window.onload = function() {
+        AFRAME.registerComponent('videohandler', {
+            init: function () {
+var marker = this.el;
+
+                this.vid = document.querySelector("#vid");
+                
+                elem = this.vid;
+
+                marker.addEventListener('markerFound', function () {
+                   // this.vid.play();
+                   swt = true;
+                   document.getElementsByClassName("but")[0].style = "display:flex"
+                }.bind(this));
+
+		marker.addEventListener('markerLost', function() {
+			this.vid.pause();
+			this.vid.currentTime = 0;
+			document.getElementById("control").innerText = "start";
+ps=1;
+			swt = false;
+			document.getElementsByClassName("but")[0].style = "display:none"
+		}.bind(this));
+    
+    
+    
+            }
+        });
+    };
+</script>
+
+<style>
+    .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+    }
+    .but{
+         height: 30%;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    button{
+        border-radius:50%;
+        height:70px;
+        width:70px;
+    }
+</style>
+</head>
+
+<body style='margin : 0px; overflow: hidden;'>
+    <div class="arjs-loader">
+        <div>Loading...</div>
+    </div>
+    <div class="but"><button onclick="arst(1)" id="control">play</button></div>
+    <a-scene
+        vr-mode-ui="enabled: false;"
+        renderer='antialias: true; alpha: true; precision: mediump;'
+        embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
+
+        <a-assets>
+            <video src="https://jahanbaev.github.io/webrtc/miyagi.mp4"
+                preload="auto" id="vid" response-type="arraybuffer" loop
+                crossorigin webkit-playsinline autoplay playsinline>
+            </video>
+        </a-assets>
+
+        <a-nft
+            videohandler
+            type='nft' 
+             url="files/240px-JavaScript-logo"
+            smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
+        >
+            <a-video
+                src="#vid"
+               position='0 0 -100'
+                rotation='90 0 180'
+                width='100'
+                height='100'
+                >
+            </a-video>
+        </a-nft>
+    <a-entity camera></a-entity>
+  </a-scene>
+  
+</body>
+</html>
