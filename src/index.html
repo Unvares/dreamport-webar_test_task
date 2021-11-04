@@ -35,16 +35,11 @@
       </a-assets>
              
       <a-entity id="camera" position="0 1.6 0" camera look-controls>
-        <a-entity cursor="rayOrigin: mouse"></a-entity>
+        <a-entity cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable"></a-entity>
       </a-entity>
           
       <a-marker sphereexpand type="pattern" url="pattern-marker.patt">
-        <a-plane
-          position="0 2 0"
-          width="1.8" height="3.2"
-          rotation="-90 0 0"
-          material="transparent:true; src: #mainVideo">
-        </a-plane>
+        <a-video class="clickable" id="video" width="1.35" height="2.4" rotation="-90 0 0" src="#mainVideo"></a-video>
       </a-marker>
        
      </a-scene>
