@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+  <head>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"> </script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+  <script>
+    AFRAME.registerComponent("sphereexpand", {
+      init: function () {
+        let flag = true
+        let aVideoAssets = document.querySelector("#mainVideo")
+        const loader = () => {
+          if (flag) {
+            aVideoAssets.play()
+            flag = false
+          } else {
+            aVideoAssets.pause()
+            flag  = true
+          }
+        }
+        this.el.addEventListener("click", loader);
+        // this.el.addEventListener("markerFound", () => {
+        //   videoPlayer.play()
+        // })
+        this.el.addEventListener("markerLost", () => {
+          aVideoAssets.pause()
+          flag = true
+        })
+    }});
+  </script>
+  <body>
+     <a-scene >
+
+      <a-assets>
+        <video  id="mainVideo" loop="true" src="тикток_девушка.mp4"></video>
+      </a-assets>
+             
+      <a-entity id="camera" position="0 1.6 0" camera look-controls>
+        <a-entity cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+          
+      <a-marker sphereexpand type="pattern" url="pattern-marker.patt">
+        <a-video class="clickable" id="video" width="1.35" height="2.4" rotation="-90 0 0" src="#mainVideo"></a-video>
+      </a-marker>
+       
+     </a-scene>
+  </body>
+</html>
